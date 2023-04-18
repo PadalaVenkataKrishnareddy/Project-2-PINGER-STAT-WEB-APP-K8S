@@ -1,0 +1,50 @@
+yum install docker.io
+
+systemctl status docker
+
+systemctl start docker
+
+search in google: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+EOF
+
+# Set SELinux in permissive mode (effectively disabling it)
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+sudo systemctl enable --now kubelet
+
+kubeadm init
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+(add in nodes)
+
+kubeadm join 172.31.48.37:6443 --token loajfw.somyxt9qxbeuuext \
+        --discovery-token-ca-cert-hash sha256:191892850455b96dcd8fa43bc89466e07fcfd32c355449561b40eecf4e9729fe 
+
+kubectl get nodes
+
+(if not ready)
+
+(paste link in nodes)  
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml -O
+
+(paste in master)
+kubectl apply -f calico.yaml
+
+
+
