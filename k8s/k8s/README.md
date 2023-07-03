@@ -1,15 +1,4 @@
-# K8s Learnathon // Kubernetes and Microservices
-Simple microservice boilerplate.
 
-## Description
-Pinger is an app which continuously calls any URL, to check if it's up or not. 
-It also records the latency, response code, size etc.
-
-This app has 3 services:
-
- - `frontend` - which provides the UI, and calls different APIs
- - `pinger` - runs a loop and calls the list of URLs provided by the UI and records all stats
- - `details` - service which providers more details about a URL
 
 ## Getting Started
 
@@ -17,29 +6,10 @@ Start by installing a local kubernetes cluster using `kind`: https://kind.sigs.k
 
 ### Setting up Local K8s Cluster
 A sample cluster configuration can be found in: `k8s/cluster/kind-cluster-config.yaml`
-
 This creates a 3 node cluster along with a control plane.
-
-Example:
- 
-```
  kind create cluster --config k8s/cluster/kind-cluster-config.yaml
 Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.20.2) 🖼
- ✓ Preparing nodes 📦 📦 📦 📦
- ✓ Writing configuration 📜
- ✓ Starting control-plane 🕹️
- ✓ Installing CNI 🔌
- ✓ Installing StorageClass 💾
- ✓ Joining worker nodes 🚜
-Set kubectl context to "kind-kind"
-You can now use your cluster with:
-
 kubectl cluster-info --context kind-kind
-
-Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
-```
-
 Check using:
  
 ```
